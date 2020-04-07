@@ -1,0 +1,6 @@
+web:
+    image: nginx:latest
+    volumes:
+        - ${PWD}/public:/usr/share/nginx/html/ 
+    ports:
+        - "80:80"

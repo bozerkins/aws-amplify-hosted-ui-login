@@ -1,0 +1,23 @@
+<input type="button" value="Sign In" id="sign_in_button" />
+<input type="button" value="Sign Out" id="sign_out_button" />
+<div style="padding-top: 20px;" id="current_user"></div>
+
+<script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/aws-amplify@3.0.6/dist/aws-amplify.min.js"></script>
+<script type="module">
+    import './configure.js'
+    
+    configure();
+
+    let userPromise = aws_amplify.Auth.currentAuthenticatedUser().catch((error) => null);
+    userPromise.then(function(user) {
+        $('#current_user').html(user ? user.username : 'anonymous');
+    });
+
+    $('#sign_in_button').click(function() {
+        aws_amplify.Auth.federatedSignIn();
+    });
+    $('#sign_out_button').click(function() {
+        aws_amplify.Auth.signOut();
+    });
+</script>

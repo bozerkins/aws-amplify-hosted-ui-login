@@ -1,0 +1,35 @@
+
+<script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/aws-amplify@3.0.6/dist/aws-amplify.min.js"></script>
+<script type="module">
+    import { configure } from './configure.js'
+
+    aws_amplify.Hub.listen('auth', (data) => {
+        switch (data.payload.event) {
+            case 'signIn':
+                // user logged in - redirect to main
+                window.location.href = '/index.html';
+                break;
+            case 'signIn_failure':
+                console.error('<handle sign in failure>');
+                break;
+        }
+    });
+
+    configure();
+
+    let userPromise = aws_amplify.Auth.currentAuthenticatedUser().catch((error) => null);
+    userPromise.then(function(user) {
+        if (user === null) {
+            // user not logged in - we do nothing
+            return;
+        }
+        
+        // user already logged in - redirect to main
+        window.location.href = '/index.html';
+    });
+
+    // signIn
+    // signIn_failure
+
+</script>
